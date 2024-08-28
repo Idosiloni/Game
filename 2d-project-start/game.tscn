@@ -1,0 +1,90 @@
+[gd_scene load_steps=5 format=3 uid="uid://b7lmahpwg0p0u"]
+
+[ext_resource type="Script" path="res://game.gd" id="1_a7osj"]
+[ext_resource type="PackedScene" uid="uid://tu1rsf2uwp0f" path="res://player.tscn" id="1_y81hy"]
+[ext_resource type="PackedScene" uid="uid://cwq22ibnmv1vl" path="res://tree.tscn" id="2_puidj"]
+
+[sub_resource type="Curve2D" id="Curve2D_8xv1l"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -133, -149, 0, 0, 0, 0, 2055, -136, 0, 0, 0, 0, 2066, 1265, 0, 0, 0, 0, -139, 1259, 0, 0, 0, 0, -133, -149)
+}
+point_count = 5
+
+[node name="Game" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_a7osj")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -30
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+offset_right = 1913.0
+offset_bottom = 1089.0
+
+[node name="player" parent="." instance=ExtResource("1_y81hy")]
+position = Vector2(934, 561)
+
+[node name="Path2D" type="Path2D" parent="player"]
+position = Vector2(-934, -561)
+curve = SubResource("Curve2D_8xv1l")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="player/Path2D"]
+unique_name_in_owner = true
+position = Vector2(-133, -149)
+rotation = 0.00594143
+
+[node name="Tree" parent="." instance=ExtResource("2_puidj")]
+position = Vector2(216, 174)
+
+[node name="Tree2" parent="." instance=ExtResource("2_puidj")]
+position = Vector2(366, 727)
+
+[node name="Tree3" parent="." instance=ExtResource("2_puidj")]
+position = Vector2(1450, 199)
+
+[node name="Tree4" parent="." instance=ExtResource("2_puidj")]
+position = Vector2(1538, 215)
+
+[node name="Tree5" parent="." instance=ExtResource("2_puidj")]
+position = Vector2(1462, 279)
+
+[node name="Tree6" parent="." instance=ExtResource("2_puidj")]
+position = Vector2(1366, 803)
+
+[node name="Tree7" parent="." instance=ExtResource("2_puidj")]
+position = Vector2(878, 923)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.3
+autostart = true
+
+[node name="GameOver" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="GameOver"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.678431)
+
+[node name="Label" type="Label" parent="GameOver/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = -11.5
+offset_right = 46.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 285
+text = "Game Over!"
+
+[connection signal="health_depleted" from="player" to="." method="_on_player_health_depleted"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
